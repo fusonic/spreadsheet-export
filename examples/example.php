@@ -1,6 +1,19 @@
 <?php
 
-require("../lib/Fusonic/bootstrapper.php");
+// Register autoloader
+spl_autoload_register(function($name) {
+
+    if(strpos($name, "Fusonic\\") === 0)
+    {
+        $className = str_replace("\\", DIRECTORY_SEPARATOR, $name);
+        $path = __DIR__ . "/../lib/" . $className . ".php";
+        if(!include_once($path))
+        {
+            throw new Exception("Could not load " . $name);
+        }
+    }
+
+});
 
 use Fusonic\SpreadsheetExport\Spreadsheet;
 use Fusonic\SpreadsheetExport\ColumnTypes\CurrencyColumn;

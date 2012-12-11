@@ -1,0 +1,14 @@
+{
+    "name": "fusonic/spreadsheet-export",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {"name": "Matthias Burtscher", "email": "matthias.burtscher@fusonic.net"}
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": { "Fusonic\\SpreadsheetExport\\": "lib/" }
+    }
+}
