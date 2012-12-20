@@ -5,6 +5,15 @@ SpreadsheetExport is a PHP library which allows you to export spreadsheet data i
 * Comma Separated Values (.csv)
 * Tab Separated Values (.tsv)
 
+It is licensed under the MIT license.
+
 ## Requirements
 * PHP 5.3 or later
-* Zip-Extension to use OdsWriter
+* Zip-Extension to use ODS Export
+
+## How to obtain
+* Check out this repository
+* Use [Composer / Packagist](https://packagist.org/packages/fusonic/spreadsheet-export)
+
+## Projects using this Library
+* [Ribbl Community Software](https://www.ribbl.com/)
