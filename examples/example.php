@@ -42,14 +42,17 @@ $export->AddRow(array("2012-01-01", "world population reaches 7 billion", 7, nul
 
 // Instantiate writer (CSV)
 // $writer = new CsvWriter();
+// $writer->includeColumnHeaders = true;
 // $writer->charset = CsvWriter::CHARSET_ISO;
 
 // Instantiate writer (TSV)
 // $writer = new TsvWriter();
+// $writer->includeColumnHeaders = true;
 // $writer->charset = TsvWriter::CHARSET_ISO;
 
 // Instantiate writer (ODS)
 $writer = new OdsWriter();
+$writer->includeColumnHeaders = true;
 
 // Save
 // $export->Save($writer, "/tmp/Sample");

@@ -118,6 +118,19 @@ class OdsWriter extends Writer
             $xmlTableColumn->addAttribute("table:style-name", "col" . $columnIndex, self::ODF_NAMESPACE_TABLE);
         }
 
+        // Column headers
+        if($this->includeColumnHeaders)
+        {
+            $xmlRow = $xmlTable->addChild("table-row", null, self::ODF_NAMESPACE_TABLE);
+
+            foreach($columns as $column)
+            {
+                $xmlCell = $xmlRow->addChild("table-cell", null, self::ODF_NAMESPACE_TABLE);
+                $xmlCell->addAttribute("office:value-type", "string", self::ODF_NAMESPACE_OFFICE);
+                $xmlCell->addChild("p", (string)$column->title, self::ODF_NAMESPACE_TEXT);
+            }
+        }
+
         // Rows
         foreach($data AS $rowIndex => $row)
         {
@@ -152,7 +165,7 @@ class OdsWriter extends Writer
                     $xmlCell->addAttribute("office:value-type", "date", self::ODF_NAMESPACE_OFFICE);
 
                     $value = $row[$columnIndex];
-                    if(!$value instanceof DateTime)
+                    if(!$value instanceof \DateTime)
                     {
                         $value = new \DateTime($value);
                     }
