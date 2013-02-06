@@ -37,22 +37,40 @@ class TsvWriter extends CsvWriter
         return "tsv";
     }
 
+    private function NormalizeValue($value)
+    {
+        return str_replace("\t", " ", $value);
+    }
+
     public function GetContent(array $columns, array $data, $flags = null)
     {
         // Create a temporary filestream
         $fd = fopen("php://temp", "r+");
+
+        // Write headers
+        if($this->includeColumnHeaders)
+        {
+            $columnHeaders = array();
+
+            foreach($columns as $column)
+            {
+                $columnHeaders[] = $this->NormalizeValue($column->title);
+            }
+
+            fputs($fd, implode("\t", $columnHeaders) . "\n");
+        }
 
         // Write content
         foreach($data as $row)
         {
             if(!is_array($row))
             {
-                throw new Exception("Row is not an array.");
+                throw new \Exception("Row is not an array.");
             }
 
             foreach($row as &$field)
             {
-                $field = str_replace("\t", " ", $field);
+                $field = $this->NormalizeValue($field);
             }
 
             fputs($fd, implode("\t", $row) . "\n");

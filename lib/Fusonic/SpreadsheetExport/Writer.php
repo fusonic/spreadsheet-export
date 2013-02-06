@@ -26,6 +26,8 @@ namespace Fusonic\SpreadsheetExport;
 
 abstract class Writer
 {
+    public $includeColumnHeaders = false;
+
     abstract public function GetContent(array $columns, array $data);
     abstract public function GetContentType();
     abstract public function GetDefaultExtension();

@@ -50,12 +50,25 @@ class CsvWriter extends Writer
         // Create a temporary filestream to use PHP CSV methods
         $fd = fopen("php://temp", "r+");
 
+        // Write headers
+        if($this->includeColumnHeaders)
+        {
+            $columnHeaders = array();
+
+            foreach($columns as $column)
+            {
+                $columnHeaders[] = $column->title;
+            }
+
+            fputcsv($fd, $columnHeaders, $this->delimiter, $this->enclosure);
+        }
+
         // Write content
         foreach($data as $row)
         {
             if(!is_array($row))
             {
-                throw new Exception("Row is not an array.");
+                throw new \Exception("Row is not an array.");
             }
 
             fputcsv($fd, $row, $this->delimiter, $this->enclosure);
