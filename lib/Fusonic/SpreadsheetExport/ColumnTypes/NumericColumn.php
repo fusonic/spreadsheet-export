@@ -27,7 +27,5 @@ use Fusonic\SpreadsheetExport\Column;
 
 class NumericColumn extends Column
 {
-
     public $decimals = 0;
-
 }

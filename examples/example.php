@@ -28,17 +28,17 @@ use Fusonic\SpreadsheetExport\Writers\OdsWriter;
 $export = new Spreadsheet();
 
 // Add columns
-$export->AddColumn(new DateColumn("Date"));
-$export->AddColumn(new TextColumn("Comment"));
-$export->AddColumn(new NumericColumn("Population"));
+$export->addColumn(new DateColumn("Date"));
+$export->addColumn(new TextColumn("Comment"));
+$export->addColumn(new NumericColumn("Population"));
 $bipCol = new CurrencyColumn("GWP");
 $bipCol->currency = CurrencyColumn::CURRENCY_USD;
-$export->AddColumn($bipCol);
+$export->addColumn($bipCol);
 
 // Add data rows
-$export->AddRow(array("1987-01-01", "world population reached 5 billion", 5, 24000000000000));
-$export->AddRow(array("1999-01-01", "world population reached 6 billion", 6, 41000000000000));
-$export->AddRow(array("2012-01-01", "world population reaches 7 billion", 7, null));
+$export->addRow(array("1987-01-01", "world population reached 5 billion", 5, 24000000000000));
+$export->addRow(array("1999-01-01", "world population reached 6 billion", 6, 41000000000000));
+$export->addRow(array("2012-01-01", "world population reaches 7 billion", 7, null));
 
 // Instantiate writer (CSV)
 // $writer = new CsvWriter();
@@ -55,7 +55,7 @@ $writer = new OdsWriter();
 $writer->includeColumnHeaders = true;
 
 // Save
-// $export->Save($writer, "/tmp/Sample");
+// $export->save($writer, "/tmp/Sample");
 
 // Download
-$export->Download($writer, "Sample");
+$export->download($writer, "Sample");

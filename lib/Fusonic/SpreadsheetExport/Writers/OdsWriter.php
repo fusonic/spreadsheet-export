@@ -46,17 +46,17 @@ class OdsWriter extends Writer
         }
     }
 
-    public function GetContentType()
+    public function getContentType()
     {
         return "application/vnd.oasis.opendocument.spreadsheet";
     }
 
-    public function GetDefaultExtension()
+    public function getDefaultExtension()
     {
         return "ods";
     }
 
-    public function GetContent(array $columns, array $data)
+    public function getContent(array $columns, array $data)
     {
         $tmpName = tempnam(sys_get_temp_dir(), "SpreadsheetWriterOds");
 

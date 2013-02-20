@@ -27,12 +27,12 @@ use Fusonic\SpreadsheetExport\Writer;
 
 class TsvWriter extends CsvWriter
 {
-    public function GetContentType()
+    public function getContentType()
     {
         return "text/tab-separated-values";
     }
 
-    public function GetDefaultExtension()
+    public function getDefaultExtension()
     {
         return "tsv";
     }
@@ -42,7 +42,7 @@ class TsvWriter extends CsvWriter
         return str_replace("\t", " ", $value);
     }
 
-    public function GetContent(array $columns, array $data, $flags = null)
+    public function getContent(array $columns, array $data, $flags = null)
     {
         // Create a temporary filestream
         $fd = fopen("php://temp", "r+");

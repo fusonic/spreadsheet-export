@@ -32,49 +32,49 @@ class Spreadsheet
 
     public $appendDefaultExtension = true;
 
-	public function AddColumn(Column $column)
+	public function addColumn(Column $column)
     {
         $this->columns[] = $column;
 	}
 
-	public function AddColumns(Column $column, $amount)
+	public function addColumns(Column $column, $amount)
     {
         for($i = 0; $i < $amount; $i++)
         {
-            $this->AddColumn($column);
+            $this->addColumn($column);
         }
 	}
 
-	public function AddRow(array $data)
+	public function addRow(array $data)
     {
 		$this->data[] = $data;
 	}
 
-	private function SendGeneralHeaders()
+	private function sendGeneralHeaders()
     {
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Pragma: public"); // For Internet Explorer
 	}
 
-    public function Get(Writer $writer)
+    public function get(Writer $writer)
     {
-        return $writer->GetContent($this->columns, $this->data);
+        return $writer->getContent($this->columns, $this->data);
     }
 
-    public function Download(Writer $writer, $filename = null)
+    public function download(Writer $writer, $filename = null)
     {
-        $content = $this->Get($writer);
+        $content = $this->get($writer);
 
         // Send headers
-        $this->SendGeneralHeaders();
-        header("Content-Type: " . $writer->GetContentType());
+        $this->sendGeneralHeaders();
+        header("Content-Type: " . $writer->getContentType());
         header("Content-Length: " . strlen($content));
         if($filename !== null)
         {
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
             if(!$extension && $this->appendDefaultExtension)
             {
-                $filename .= "." . $writer->GetDefaultExtension();
+                $filename .= "." . $writer->getDefaultExtension();
             }
 
             header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
@@ -83,15 +83,15 @@ class Spreadsheet
         echo $content;
     }
 
-    public function Save(Writer $writer, $path)
+    public function save(Writer $writer, $path)
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
         if(!$extension && $this->appendDefaultExtension)
         {
-            $path .= "." . $writer->GetDefaultExtension();
+            $path .= "." . $writer->getDefaultExtension();
         }
 
-        file_put_contents($path, $this->Get($writer));
+        file_put_contents($path, $this->get($writer));
     }
 
 }

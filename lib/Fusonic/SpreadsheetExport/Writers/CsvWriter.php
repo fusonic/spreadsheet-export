@@ -35,17 +35,17 @@ class CsvWriter extends Writer
     public $enclosure = "\"";
     public $charset = self::CHARSET_UTF8;
 
-    public function GetContentType()
+    public function getContentType()
     {
         return "text/csv; charset=" . ($this->charset == self::CHARSET_UTF8 ? "UTF-8" : "ISO-8859-1");
     }
 
-    public function GetDefaultExtension()
+    public function getDefaultExtension()
     {
         return "csv";
     }
 
-    public function GetContent(array $columns, array $data)
+    public function getContent(array $columns, array $data)
     {
         // Create a temporary filestream to use PHP CSV methods
         $fd = fopen("php://temp", "r+");
