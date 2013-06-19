@@ -1,19 +1,10 @@
 <?php
 
-// Register autoloader
-spl_autoload_register(function($name) {
-
-    if(strpos($name, "Fusonic\\") === 0)
-    {
-        $className = str_replace("\\", DIRECTORY_SEPARATOR, $name);
-        $path = __DIR__ . "/../lib/" . $className . ".php";
-        if(!include_once($path))
-        {
-            throw new Exception("Could not load " . $name);
-        }
-    }
-
-});
+if (!$loader = @include __DIR__.'/../vendor/autoload.php') {
+    die('You must set up the project dependencies, run the following commands:'.PHP_EOL.
+        'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
+        'php composer.phar install'.PHP_EOL);
+}
 
 use Fusonic\SpreadsheetExport\Spreadsheet;
 use Fusonic\SpreadsheetExport\ColumnTypes\CurrencyColumn;

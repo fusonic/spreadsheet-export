@@ -1,14 +1,22 @@
 {
     "name": "fusonic/spreadsheet-export",
+    "description": "Library to create simple exports to CSV/TSV/ODS in PHP",
+    "keywords": ["csv", "tsv", "ods", "export"],
     "type": "library",
+    "homepage": "https://github.com/fusonic/fusonic-spreadsheetexport",
     "license": "MIT",
     "authors": [
-        {"name": "Matthias Burtscher", "email": "matthias.burtscher@fusonic.net"}
+        {
+            "name": "Fusonic",
+            "homepage": "http://www.fusonic.net"
+        }
     ],
     "require": {
         "php": ">=5.3.0"
     },
     "autoload": {
-        "psr-0": { "Fusonic\\SpreadsheetExport\\": "lib/" }
+        "psr-0": {
+            "Fusonic\\SpreadsheetExport": "src/"
+        }
     }
 }

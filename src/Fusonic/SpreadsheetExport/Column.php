@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2012 Fusonic GmbH
+ * Copyright (c) 2012-2013 Fusonic GmbH
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,14 @@
 
 namespace Fusonic\SpreadsheetExport;
 
-abstract class Writer
+abstract class Column
 {
-    public $includeColumnHeaders = false;
+    public $title;
+    public $width;
 
-    abstract public function getContent(array $columns, array $data);
-    abstract public function getContentType();
-    abstract public function getDefaultExtension();
+    public function __construct($title, $width = null)
+    {
+        $this->title = $title;
+        $this->width = $width;
+    }
 }
