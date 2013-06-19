@@ -71,6 +71,14 @@ class CsvWriter extends Writer
                 throw new \Exception("Row is not an array.");
             }
 
+            foreach($row as &$field)
+            {
+                if($field instanceof \DateTime)
+                {
+                    $field = $field->format("Y-m-d H:i:s");
+                }
+            }
+
             fputcsv($fd, $row, $this->delimiter, $this->enclosure);
         }
 

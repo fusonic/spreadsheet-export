@@ -171,7 +171,7 @@ class OdsWriter extends Writer
                     }
 
                     $xmlCell->addAttribute("office:date-value", substr($value->format("c"), 0, 19), self::ODF_NAMESPACE_OFFICE);
-                    $xmlCell->addChild("p", $row[$columnIndex], self::ODF_NAMESPACE_TEXT);
+                    $xmlCell->addChild("p", $value->format("Y-m-d H:i:s"), self::ODF_NAMESPACE_TEXT);
                 }
             }
         }

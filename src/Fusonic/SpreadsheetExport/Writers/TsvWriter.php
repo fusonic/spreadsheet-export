@@ -27,6 +27,11 @@ use Fusonic\SpreadsheetExport\Writer;
 
 class TsvWriter extends CsvWriter
 {
+    public function __construct()
+    {
+        $this->charset = self::CHARSET_ISO;
+    }
+
     public function getContentType()
     {
         return "text/tab-separated-values";
@@ -70,7 +75,14 @@ class TsvWriter extends CsvWriter
 
             foreach($row as &$field)
             {
-                $field = $this->NormalizeValue($field);
+                if($field instanceof \DateTime)
+                {
+                    $field = $field->format("Y-m-d H:i:s");
+                }
+                else if(is_string($field))
+                {
+                    $field = $this->NormalizeValue($field);
+                }
             }
 
             fputs($fd, implode("\t", $row) . "\n");
