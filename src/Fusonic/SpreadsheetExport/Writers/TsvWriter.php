@@ -23,7 +23,6 @@
  */
 
 namespace Fusonic\SpreadsheetExport\Writers;
-use Fusonic\SpreadsheetExport\Writer;
 
 class TsvWriter extends CsvWriter
 {
@@ -42,7 +41,7 @@ class TsvWriter extends CsvWriter
         return "tsv";
     }
 
-    private function NormalizeValue($value)
+    private function normalizeValue($value)
     {
         return str_replace("\t", " ", $value);
     }
@@ -53,35 +52,29 @@ class TsvWriter extends CsvWriter
         $fd = fopen("php://temp", "r+");
 
         // Write headers
-        if($this->includeColumnHeaders)
-        {
+        if ($this->includeColumnHeaders) {
             $columnHeaders = array();
 
-            foreach($columns as $column)
-            {
-                $columnHeaders[] = $this->NormalizeValue($column->title);
+            foreach ($columns as $column) {
+                $columnHeaders[] = $this->normalizeValue($column->title);
             }
 
             fputs($fd, implode("\t", $columnHeaders) . "\n");
         }
 
         // Write content
-        foreach($data as $row)
-        {
-            if(!is_array($row))
-            {
+        foreach ($data as $row) {
+            if (!is_array($row)) {
                 throw new \Exception("Row is not an array.");
             }
 
-            foreach($row as &$field)
-            {
-                if($field instanceof \DateTime)
-                {
+            foreach ($row as &$field) {
+                if ($field instanceof \DateTime) {
                     $field = $field->format("Y-m-d H:i:s");
-                }
-                else if(is_string($field))
-                {
-                    $field = $this->NormalizeValue($field);
+                } else {
+                    if (is_string($field)) {
+                        $field = $this->normalizeValue($field);
+                    }
                 }
             }
 
@@ -91,8 +84,7 @@ class TsvWriter extends CsvWriter
         // Read content
         rewind($fd);
         $content = "";
-        while($chunk = fread($fd, self::READ_CHUNK_SIZE))
-        {
+        while ($chunk = fread($fd, self::READ_CHUNK_SIZE)) {
             $content .= $chunk;
         }
 
@@ -100,11 +92,9 @@ class TsvWriter extends CsvWriter
         fclose($fd);
 
         // Return correctly encoded content
-        switch($this->charset)
-        {
+        switch ($this->charset) {
             case self::CHARSET_ISO:
                 return utf8_decode($content);
-
             default:
                 return $content;
         }

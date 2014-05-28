@@ -23,6 +23,7 @@
  */
 
 namespace Fusonic\SpreadsheetExport\Writers;
+
 use Fusonic\SpreadsheetExport\Writer;
 
 class CsvWriter extends Writer
@@ -51,12 +52,10 @@ class CsvWriter extends Writer
         $fd = fopen("php://temp", "r+");
 
         // Write headers
-        if($this->includeColumnHeaders)
-        {
+        if ($this->includeColumnHeaders) {
             $columnHeaders = array();
 
-            foreach($columns as $column)
-            {
+            foreach ($columns as $column) {
                 $columnHeaders[] = $column->title;
             }
 
@@ -64,17 +63,13 @@ class CsvWriter extends Writer
         }
 
         // Write content
-        foreach($data as $row)
-        {
-            if(!is_array($row))
-            {
+        foreach ($data as $row) {
+            if (!is_array($row)) {
                 throw new \Exception("Row is not an array.");
             }
 
-            foreach($row as &$field)
-            {
-                if($field instanceof \DateTime)
-                {
+            foreach ($row as &$field) {
+                if ($field instanceof \DateTime) {
                     $field = $field->format("Y-m-d H:i:s");
                 }
             }
@@ -85,8 +80,7 @@ class CsvWriter extends Writer
         // Read content
         rewind($fd);
         $content = "";
-        while($chunk = fread($fd, self::READ_CHUNK_SIZE))
-        {
+        while ($chunk = fread($fd, self::READ_CHUNK_SIZE)) {
             $content .= $chunk;
         }
 
@@ -94,11 +88,9 @@ class CsvWriter extends Writer
         fclose($fd);
 
         // Return correctly encoded content
-        switch($this->charset)
-        {
+        switch ($this->charset) {
             case self::CHARSET_ISO:
                 return utf8_decode($content);
-
             default:
                 return $content;
         }

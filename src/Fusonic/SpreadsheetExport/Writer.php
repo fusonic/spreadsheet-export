@@ -29,6 +29,8 @@ abstract class Writer
     public $includeColumnHeaders = false;
 
     abstract public function getContent(array $columns, array $data);
+
     abstract public function getContentType();
+
     abstract public function getDefaultExtension();
 }

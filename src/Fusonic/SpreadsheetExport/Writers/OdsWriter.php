@@ -23,6 +23,7 @@
  */
 
 namespace Fusonic\SpreadsheetExport\Writers;
+
 use Fusonic\SpreadsheetExport\Writer;
 use Fusonic\SpreadsheetExport\ColumnTypes\CurrencyColumn;
 use Fusonic\SpreadsheetExport\ColumnTypes\DateColumn;
@@ -40,8 +41,7 @@ class OdsWriter extends Writer
 
     public function __construct()
     {
-        if(!class_exists("ZipArchive", false))
-        {
+        if (!class_exists("ZipArchive", false)) {
             throw new \RuntimeException("Ods writer requires zip extension to be installed.");
         }
     }
@@ -68,11 +68,16 @@ class OdsWriter extends Writer
         $zip->addFromString("mimetype", "application/vnd.oasis.opendocument.spreadsheet");
 
         // Write meta information (manifest)
-        $xml = new \SimpleXMLElement('<manifest:manifest '
-            . 'xmlns:manifest="' . self::ODF_NAMESPACE_MANIFEST . '" />');
+        $xml = new \SimpleXMLElement(
+            '<manifest:manifest xmlns:manifest="' . self::ODF_NAMESPACE_MANIFEST . '" />'
+        );
 
         $xmlFileEntry = $xml->addChild("file-entry", null, self::ODF_NAMESPACE_MANIFEST);
-        $xmlFileEntry->addAttribute("manifest:media-type", "application/vnd.oasis.opendocument.spreadsheet", self::ODF_NAMESPACE_MANIFEST);
+        $xmlFileEntry->addAttribute(
+            "manifest:media-type",
+            "application/vnd.oasis.opendocument.spreadsheet",
+            self::ODF_NAMESPACE_MANIFEST
+        );
         $xmlFileEntry->addAttribute("manifest:full-path", "/", self::ODF_NAMESPACE_MANIFEST);
 
         $xmlFileEntry = $xml->addChild("file-entry", null, self::ODF_NAMESPACE_MANIFEST);
@@ -83,18 +88,19 @@ class OdsWriter extends Writer
         $zip->addFromString("META-INF/manifest.xml", $xml->asXML());
 
         // Write content (content.xml)
-        $xml = new \SimpleXMLElement('<office:document-content '
+        $xml = new \SimpleXMLElement(
+            '<office:document-content '
             . 'xmlns:office="' . self::ODF_NAMESPACE_OFFICE . '" '
             . 'xmlns:style="' . self::ODF_NAMESPACE_STYLE . '" '
             . 'xmlns:text="' . self::ODF_NAMESPACE_TEXT . '" '
             . 'xmlns:table="' . self::ODF_NAMESPACE_TABLE . '" '
-            . 'office:version="1.1" />');
+            . 'office:version="1.1" />'
+        );
 
 
         // Set styles
         $xmlAutomaticStyles = $xml->addChild("automatic-styles", null, self::ODF_NAMESPACE_OFFICE);
-        foreach($columns AS $columnIndex => $column)
-        {
+        foreach ($columns as $columnIndex => $column) {
             // <style>
             $xmlStyle = $xmlAutomaticStyles->addChild("style", null, self::ODF_NAMESPACE_STYLE);
             $xmlStyle->addAttribute("style:name", "col" . $columnIndex, self::ODF_NAMESPACE_STYLE);
@@ -102,7 +108,11 @@ class OdsWriter extends Writer
 
             // <table-coluömn-properties>
             $xmlTableColumnProperties = $xmlStyle->addChild("table-column-properties", null, self::ODF_NAMESPACE_STYLE);
-            $xmlTableColumnProperties->addAttribute("style:column-width", $column->width . "cm", self::ODF_NAMESPACE_STYLE);
+            $xmlTableColumnProperties->addAttribute(
+                "style:column-width",
+                $column->width . "cm",
+                self::ODF_NAMESPACE_STYLE
+            );
         }
 
         // Write table
@@ -111,20 +121,17 @@ class OdsWriter extends Writer
         $xmlTable = $xmlSpreadsheet->addChild("table", null, self::ODF_NAMESPACE_TABLE);
 
         // Columns
-        foreach($columns AS $columnIndex => $column)
-        {
+        foreach ($columns as $columnIndex => $column) {
             // <table-column>
             $xmlTableColumn = $xmlTable->addChild("table-column", null, self::ODF_NAMESPACE_TABLE);
             $xmlTableColumn->addAttribute("table:style-name", "col" . $columnIndex, self::ODF_NAMESPACE_TABLE);
         }
 
         // Column headers
-        if($this->includeColumnHeaders)
-        {
+        if ($this->includeColumnHeaders) {
             $xmlRow = $xmlTable->addChild("table-row", null, self::ODF_NAMESPACE_TABLE);
 
-            foreach($columns as $column)
-            {
+            foreach ($columns as $column) {
                 $xmlCell = $xmlRow->addChild("table-cell", null, self::ODF_NAMESPACE_TABLE);
                 $xmlCell->addAttribute("office:value-type", "string", self::ODF_NAMESPACE_OFFICE);
                 $xmlCell->addChild("p", (string)$column->title, self::ODF_NAMESPACE_TEXT);
@@ -132,45 +139,44 @@ class OdsWriter extends Writer
         }
 
         // Rows
-        foreach($data AS $rowIndex => $row)
-        {
+        foreach ($data as $row) {
             $xmlRow = $xmlTable->addChild("table-row", null, self::ODF_NAMESPACE_TABLE);
 
             // Cells
-            foreach($columns AS $columnIndex => $column) {
+            foreach ($columns as $columnIndex => $column) {
 
                 // <table-cell>
                 $xmlCell = $xmlRow->addChild("table-cell", null, self::ODF_NAMESPACE_TABLE);
 
-                if($column instanceof TextColumn)
-                {
+                if ($column instanceof TextColumn) {
                     $xmlCell->addAttribute("office:value-type", "string", self::ODF_NAMESPACE_OFFICE);
                     $xmlCell->addChild("p", (string)$row[$columnIndex], self::ODF_NAMESPACE_TEXT);
-                }
-                elseif($column instanceof CurrencyColumn)
-                {
+                } elseif ($column instanceof CurrencyColumn) {
                     $xmlCell->addAttribute("office:value-type", "currency", self::ODF_NAMESPACE_OFFICE);
-                    $xmlCell->addAttribute("office:currency", strtoupper($column->currency), self::ODF_NAMESPACE_OFFICE);
+                    $xmlCell->addAttribute(
+                        "office:currency",
+                        strtoupper($column->currency),
+                        self::ODF_NAMESPACE_OFFICE
+                    );
                     $xmlCell->addAttribute("office:value", (float)$row[$columnIndex], self::ODF_NAMESPACE_OFFICE);
                     $xmlCell->addChild("p", (float)$row[$columnIndex], self::ODF_NAMESPACE_TEXT);
-                }
-                elseif($column instanceof NumericColumn)
-                {
+                } elseif ($column instanceof NumericColumn) {
                     $xmlCell->addAttribute("office:value-type", "float", self::ODF_NAMESPACE_OFFICE);
                     $xmlCell->addAttribute("office:value", (float)$row[$columnIndex], self::ODF_NAMESPACE_OFFICE);
                     $xmlCell->addChild("p", (float)$row[$columnIndex], self::ODF_NAMESPACE_TEXT);
-                }
-                elseif($column instanceof DateColumn)
-                {
+                } elseif ($column instanceof DateColumn) {
                     $xmlCell->addAttribute("office:value-type", "date", self::ODF_NAMESPACE_OFFICE);
 
                     $value = $row[$columnIndex];
-                    if(!$value instanceof \DateTime)
-                    {
+                    if (!$value instanceof \DateTime) {
                         $value = new \DateTime($value);
                     }
 
-                    $xmlCell->addAttribute("office:date-value", substr($value->format("c"), 0, 19), self::ODF_NAMESPACE_OFFICE);
+                    $xmlCell->addAttribute(
+                        "office:date-value",
+                        substr($value->format("c"), 0, 19),
+                        self::ODF_NAMESPACE_OFFICE
+                    );
                     $xmlCell->addChild("p", $value->format("Y-m-d H:i:s"), self::ODF_NAMESPACE_TEXT);
                 }
             }

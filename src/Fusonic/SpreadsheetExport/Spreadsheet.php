@@ -27,34 +27,33 @@ namespace Fusonic\SpreadsheetExport;
 class Spreadsheet
 {
 
-	private $columns = array();
-	private $data = array();
+    private $columns = array();
+    private $data = array();
 
     public $appendDefaultExtension = true;
 
-	public function addColumn(Column $column)
+    public function addColumn(Column $column)
     {
         $this->columns[] = $column;
-	}
+    }
 
-	public function addColumns(Column $column, $amount)
+    public function addColumns(Column $column, $amount)
     {
-        for($i = 0; $i < $amount; $i++)
-        {
+        for ($i = 0; $i < $amount; $i++) {
             $this->addColumn($column);
         }
-	}
+    }
 
-	public function addRow(array $data)
+    public function addRow(array $data)
     {
-		$this->data[] = $data;
-	}
+        $this->data[] = $data;
+    }
 
-	private function sendGeneralHeaders()
+    private function sendGeneralHeaders()
     {
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Pragma: public"); // For Internet Explorer
-	}
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: public"); // For Internet Explorer
+    }
 
     public function get(Writer $writer)
     {
@@ -69,11 +68,9 @@ class Spreadsheet
         $this->sendGeneralHeaders();
         header("Content-Type: " . $writer->getContentType());
         header("Content-Length: " . strlen($content));
-        if($filename !== null)
-        {
+        if ($filename !== null) {
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
-            if(!$extension && $this->appendDefaultExtension)
-            {
+            if (!$extension && $this->appendDefaultExtension) {
                 $filename .= "." . $writer->getDefaultExtension();
             }
 
@@ -86,12 +83,10 @@ class Spreadsheet
     public function save(Writer $writer, $path)
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
-        if(!$extension && $this->appendDefaultExtension)
-        {
+        if (!$extension && $this->appendDefaultExtension) {
             $path .= "." . $writer->getDefaultExtension();
         }
 
         file_put_contents($path, $this->get($writer));
     }
-
 }

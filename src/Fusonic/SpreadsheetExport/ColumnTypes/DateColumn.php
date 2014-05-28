@@ -23,6 +23,7 @@
  */
 
 namespace Fusonic\SpreadsheetExport\ColumnTypes;
+
 use Fusonic\SpreadsheetExport\Column;
 
 class DateColumn extends Column
