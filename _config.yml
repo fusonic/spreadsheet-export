@@ -1,10 +1,10 @@
 # Site settings
-description: "A blank repository to use as stub for PHP libraries."
-baseurl: "/seed"
-url: "http://fusonic.github.io/seed"
+description: "PHP Library to export data in various spreadsheet formats like ODS, CSV, TSV ..."
+baseurl: "/spreadsheetexport"
+url: "http://fusonic.github.io/spreadsheetexport"
 github_username: fusonic
-github_repository: seed
-version: 1.0.0
+github_repository: spreadsheetexport
+version: 0.1.1
 
 # Build settings
 markdown: kramdown

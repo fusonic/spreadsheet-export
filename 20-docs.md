@@ -4,4 +4,4 @@ title: Documentation
 permalink: /docs/
 ---
 
-> Some more detailed documentation goes here.
+> No more docs are available at this time. Please have a look at the <a href="examples">examples</a>.
