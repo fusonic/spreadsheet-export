@@ -22,7 +22,7 @@ The most flexible installation method is using Composer: Simply create a compose
 {% highlight json %}
 {
     "require": {
-        "fusonic/opengraph": "@dev"
+        "fusonic/spreadsheetexport": "@dev"
     }
 }
 {% endhighlight %}
