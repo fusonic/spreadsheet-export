@@ -149,8 +149,13 @@ class OdsWriter extends Writer
                 $xmlCell = $xmlRow->addChild("table-cell", null, self::ODF_NAMESPACE_TABLE);
 
                 if ($column instanceof TextColumn) {
+                    // Content must be escaped to avoid "unterminated entity reference" errors. Like stated in
+                    // comments on php.net we may use htmlspecialchars() since it does not escape entites that
+                    // are already encoded
+                    $content = htmlspecialchars((string)$row[$columnIndex]);
+
                     $xmlCell->addAttribute("office:value-type", "string", self::ODF_NAMESPACE_OFFICE);
-                    $xmlCell->addChild("p", (string)$row[$columnIndex], self::ODF_NAMESPACE_TEXT);
+                    $xmlCell->addChild("p", $content, self::ODF_NAMESPACE_TEXT);
                 } elseif ($column instanceof CurrencyColumn) {
                     $xmlCell->addAttribute("office:value-type", "currency", self::ODF_NAMESPACE_OFFICE);
                     $xmlCell->addAttribute(
