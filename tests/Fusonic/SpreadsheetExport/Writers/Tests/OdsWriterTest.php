@@ -4,7 +4,7 @@ use Fusonic\SpreadsheetExport\ColumnTypes\TextColumn;
 use Fusonic\SpreadsheetExport\Spreadsheet;
 use Fusonic\SpreadsheetExport\Writers\OdsWriter;
 
-class Test extends PHPUnit_Framework_TestCase
+class OdsWriterTest extends PHPUnit_Framework_TestCase
 {
     private $writer;
 
@@ -19,7 +19,7 @@ class Test extends PHPUnit_Framework_TestCase
     {
         $sheet = new Spreadsheet();
         $sheet->addColumn(new TextColumn("Title"));
-        $sheet->addRow(["The good, the bad & the ugly"]);
+        $sheet->addRow(array("The good, the bad & the ugly"));
         $sheet->get($this->writer);
     }
 }
