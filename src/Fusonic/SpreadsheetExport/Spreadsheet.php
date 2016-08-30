@@ -32,43 +32,43 @@ class Spreadsheet
 
     public $appendDefaultExtension = true;
 
-	/**
-	 * @param Column $column
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param Column $column
+     *
+     * @return $this
+     */
     public function addColumn(Column $column)
     {
         $this->columns[] = $column;
 
-	    return $this;
+        return $this;
     }
 
-	/**
-	 * @param Column $column
-	 * @param $amount
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param Column $column
+     * @param $amount
+     *
+     * @return $this
+     */
     public function addColumns(Column $column, $amount)
     {
         for ($i = 0; $i < $amount; $i++) {
             $this->addColumn($column);
         }
 
-	    return $this;
+        return $this;
     }
 
-	/**
-	 * @param array $data
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param array $data
+     *
+     * @return $this
+     */
     public function addRow(array $data)
     {
         $this->data[] = $data;
 
-	    return $this;
+        return $this;
     }
 
     private function sendGeneralHeaders()
