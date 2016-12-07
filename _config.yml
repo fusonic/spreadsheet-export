@@ -4,7 +4,7 @@ baseurl: "/spreadsheetexport"
 url: "http://fusonic.github.io/spreadsheetexport"
 github_username: fusonic
 github_repository: spreadsheetexport
-version: 0.1.1
+version: 1.0.0
 
 # Build settings
 markdown: kramdown
