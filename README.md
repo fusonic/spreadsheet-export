@@ -14,6 +14,3 @@ It is licensed under the MIT license.
 ## How to obtain
 * Check out this repository
 * Use [Composer / Packagist](https://packagist.org/packages/fusonic/spreadsheet-export)
-
-## Projects using this Library
-* [Ribbl Community Software](https://www.ribbl.com/)
